@@ -1,0 +1,2804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+            --warning-color: #d97706;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Professional Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(99, 102, 241, 0.02) 0%, transparent 50%);
+            z-index: -2;
+            animation: backgroundShift 30s ease-in-out infinite;
+        }
+
+        /* Subtle Floating Particles */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .particle.small {
+            width: 2px;
+            height: 2px;
+            animation: particleFloatSmall 25s infinite linear;
+        }
+
+        .particle.medium {
+            width: 3px;
+            height: 3px;
+            background: rgba(5, 150, 105, 0.08);
+            animation: particleFloatMedium 30s infinite linear;
+        }
+
+        .particle.large {
+            width: 4px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.06);
+            animation: particleFloatLarge 35s infinite linear;
+        }
+
+        @keyframes particleFloatSmall {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0);
+            }
+            10% {
+                opacity: 0.3;
+                transform: translateY(90vh) translateX(10px) scale(1);
+            }
+            90% {
+                opacity: 0.3;
+                transform: translateY(10vh) translateX(-10px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(0vh) translateX(0) scale(0);
+            }
+        }
+
+        @keyframes particleFloatMedium {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0) rotate(0deg);
+            }
+            10% {
+                opacity: 0.25;
+                transform: translateY(85vh) translateX(-15px) scale(1) rotate(90deg);
+            }
+            90% {
+                opacity: 0.25;
+                transform: translateY(15vh) translateX(15px) scale(1) rotate(270deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(0vh) translateX(0) scale(0) rotate(360deg);
+            }
+        }
+
+        @keyframes particleFloatLarge {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0) rotate(0deg);
+            }
+            10% {
+                opacity: 0.2;
+                transform: translateY(80vh) translateX(20px) scale(1) rotate(-90deg);
+            }
+            90% {
+                opacity: 0.2;
+                transform: translateY(20vh) translateX(-20px) scale(1) rotate(-270deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(0vh) translateX(0) scale(0) rotate(-360deg);
+            }
+        }
+
+        /* Professional Geometric Shapes */
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .geo-shape {
+            position: absolute;
+            animation: geoFloat 60s infinite ease-in-out;
+        }
+
+        .geo-circle {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(37, 99, 235, 0.05);
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.02), transparent);
+        }
+
+        .geo-square {
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(5, 150, 105, 0.04);
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.02), transparent);
+            animation: geoRotate 80s infinite linear;
+        }
+
+        .geo-triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 52px solid rgba(99, 102, 241, 0.03);
+            animation: geoFloat 70s infinite ease-in-out reverse;
+        }
+
+        @keyframes geoFloat {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.05;
+            }
+            25% {
+                transform: translateY(-20px) translateX(15px) rotate(90deg);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translateY(15px) translateX(-20px) rotate(180deg);
+                opacity: 0.07;
+            }
+            75% {
+                transform: translateY(-15px) translateX(-15px) rotate(270deg);
+                opacity: 0.1;
+            }
+        }
+
+        @keyframes geoRotate {
+            from {
+                transform: rotate(0deg) translateX(80px) rotate(0deg);
+                opacity: 0.05;
+            }
+            to {
+                transform: rotate(360deg) translateX(80px) rotate(-360deg);
+                opacity: 0.05;
+            }
+        }
+
+        /* Subtle Gradient Mesh */
+        .gradient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(5, 150, 105, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+            animation: meshShift 40s ease-in-out infinite;
+        }
+
+        @keyframes meshShift {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.15;
+            }
+            33% {
+                transform: scale(1.05) rotate(120deg);
+                opacity: 0.2;
+            }
+            66% {
+                transform: scale(0.95) rotate(240deg);
+                opacity: 0.1;
+            }
+        }
+
+        /* Professional Connection Lines */
+        .connection-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+            animation: connectionPulse 12s infinite ease-in-out;
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-20px, -20px) scale(1.1); }
+            66% { transform: translate(20px, -10px) scale(0.9); }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Section Spacing for Navigation */
+        .section {
+            scroll-margin-top: 100px;
+        }
+
+        /* Professional Header */
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: logoFloat 3s ease-in-out infinite;
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: logoShine 4s ease-in-out infinite;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-color) 50%, var(--text-primary) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGradient 3s ease-in-out infinite;
+        }
+
+        .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .header-btn-secondary:hover {
+            background: var(--background);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .header-btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: 1px solid var(--primary-color);
+        }
+
+        .header-btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Professional Footer */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .footer-logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            max-width: 300px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .social-link:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .footer-section h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .footer-legal-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        @keyframes logoShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .header-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .logo-title {
+                font-size: 1.25rem;
+            }
+
+            .logo-tagline {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-legal {
+                justify-content: center;
+            }
+        }
+
+        /* Form Section */
+        .form-section {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color), var(--primary-color));
+            background-size: 200% 100%;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .section-title span {
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(7) { animation-delay: 0.7s; }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .required {
+            color: var(--danger-color);
+            margin-left: 0.25rem;
+            animation: requiredPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes requiredPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: var(--surface);
+            position: relative;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+            transform: translateY(-2px);
+        }
+
+        input:focus + .input-border, textarea:focus + .input-border {
+            transform: scaleX(1);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgb(37 99 235 / 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgb(37 99 235 / 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--background);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgb(220 38 38 / 0.3);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgb(34 197 94 / 0.3);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            animation: slideInRight 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .preview-content {
+            min-height: 400px;
+            padding: 1.5rem;
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .animated {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Saved Resumes Section */
+        .saved-resumes {
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .saved-resumes .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: space-between;
+        }
+
+        .resume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .resume-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .resume-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .resume-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .resume-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .resume-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .resume-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .resume-meta p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resume-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .resume-actions .btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin-bottom: 0.5rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-muted {
+            opacity: 0.7;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-error {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+
+        /* Loading Animation */
+        .loading {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Main Content */
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Section Spacing for Navigation */
+        .section {
+            scroll-margin-top: 100px;
+        }
+
+        @keyframes contentGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgb(37 99 235 / 0.1); }
+            50% { box-shadow: 0 0 20px 5px rgb(37 99 235 / 0.1); }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Saved Resumes */
+        .saved-resumes {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .resume-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .resume-card {
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: cardSlideIn 0.6s ease-out both;
+        }
+
+        .resume-card:nth-child(1) { animation-delay: 0.1s; }
+        .resume-card:nth-child(2) { animation-delay: 0.2s; }
+        .resume-card:nth-child(3) { animation-delay: 0.3s; }
+        .resume-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .resume-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .resume-card:hover::before {
+            left: 100%;
+        }
+
+        .resume-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .resume-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .resume-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        .status-success {
+            background: rgb(34 197 94 / 0.1);
+            color: var(--success-color);
+            border: 1px solid rgb(34 197 94 / 0.2);
+        }
+
+        .status-error {
+            background: rgb(220 38 38 / 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgb(220 38 38 / 0.2);
+        }
+
+        .status-info {
+            background: rgb(37 99 235 / 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgb(37 99 235 / 0.2);
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chatbot-toggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .chatbot-toggle:active::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .chatbot-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px 0 rgb(37 99 235 / 0.3);
+        }
+
+        .chatbot-toggle span {
+            animation: chatBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes chatBounce {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-3px); }
+            75% { transform: translateY(3px); }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 380px;
+            height: 500px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: chatSlideUp 0.3s ease-out;
+        }
+
+        .chatbot-header {
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: var(--background);
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-lg);
+            max-width: 80%;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.user {
+            background: var(--primary-color);
+            color: white;
+            margin-left: auto;
+        }
+
+        .chat-message.bot {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+        }
+
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: loadingDotBounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loadingDotBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes chatSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-section, .preview-section, .saved-resumes {
+                padding: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .resume-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chatbot-window {
+                width: calc(100vw - 2rem);
+                right: -1rem;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-sm { font-size: 0.875rem; }
+        .text-muted { color: var(--text-muted); }
+        .mb-0 { margin-bottom: 0; }
+        .mt-2 { margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <div class="geometric-bg" id="geometricBg"></div>
+    <div class="gradient-mesh"></div>
+    <div class="connection-lines" id="connectionLines"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">📄</div>
+                        <div class="logo-text">
+                            <h1 class="logo-title">Resume Builder</h1>
+                            <p class="logo-tagline">Professional Resume Creation</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <nav class="header-nav">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#templates" class="nav-link">Templates</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+                
+                <div class="header-actions">
+                    <a href="#saved-resumes" class="header-btn header-btn-secondary">My Resumes</a>
+                    <a href="#resume-builder" class="header-btn header-btn-primary">Get Started</a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="resume-builder" class="form-section section">
+                <h2 class="section-title">
+                    <span>📝</span>
+                    Resume Information
+                </h2>
+                <form id="resumeForm">
+                    <div class="form-group">
+                        <label for="name">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="name" name="name" placeholder="John Doe" required>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            Email Address
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            Phone Number
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="education">
+                            Education
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="education" name="education" placeholder="Bachelor of Science in Computer Science" required>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">
+                            Work Experience
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <textarea id="experience" name="experience" placeholder="Describe your work experience, achievements, and responsibilities..." required></textarea>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skills">
+                            Skills
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <textarea id="skills" name="skills" placeholder="List your technical and soft skills..." required></textarea>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="objective">
+                            Career Objective
+                        </label>
+                        <div class="input-wrapper">
+                            <textarea id="objective" name="objective" placeholder="Brief description of your career goals..." rows="3"></textarea>
+                            <div class="input-border"></div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span>🚀</span>
+                            Generate Resume
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                            <span>🔄</span>
+                            Clear Form
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="preview-section">
+                <h2 class="section-title">
+                    <span>👁️</span>
+                    Resume Preview
+                </h2>
+                <div class="preview-content" id="resumePreview">
+                    <div class="empty-state">
+                        <div class="empty-icon">📄</div>
+                        <p>Your generated resume will appear here</p>
+                        <p class="text-sm text-muted mt-2">Fill out the form and click "Generate Resume" to get started</p>
+                    </div>
+                </div>
+                <div id="downloadSection" style="margin-top: 1rem; display: none;">
+                    <button class="btn btn-primary btn-full" onclick="downloadResumePDF()">
+                        <span>📥</span>
+                        Download Resume as PDF
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Features Section -->
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">
+                    <span>✨</span>
+                    Features
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Instant Generation</h3>
+                        <p style="color: var(--text-secondary);">Create professional resumes in seconds with our intelligent resume builder powered by advanced algorithms.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">💾</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Local Storage</h3>
+                        <p style="color: var(--text-secondary);">Your resumes are saved locally in your browser, ensuring complete privacy and instant access anytime.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🤖</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">AI Assistant</h3>
+                        <p style="color: var(--text-secondary);">Get personalized career advice and resume tips from our intelligent chatbot assistant.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎨</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Professional Design</h3>
+                        <p style="color: var(--text-secondary);">Clean, modern resume templates that are optimized for applicant tracking systems and recruiters.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">📱</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Responsive Design</h3>
+                        <p style="color: var(--text-secondary);">Works perfectly on all devices - desktop, tablet, and mobile - so you can create resumes anywhere.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Complete Privacy</h3>
+                        <p style="color: var(--text-secondary);">Your data never leaves your browser. No server storage, no data sharing, complete confidentiality.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Section -->
+        <section id="templates" class="section" style="background: var(--background);">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">
+                    <span>📋</span>
+                    Resume Templates
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <div class="template-card">
+                        <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">💼</div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Professional</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Classic, clean design perfect for corporate positions and traditional industries.</p>
+                            <button class="btn btn-primary" onclick="selectTemplate('professional')">Use This Template</button>
+                        </div>
+                    </div>
+                    <div class="template-card">
+                        <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Modern</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Contemporary design with clean lines and modern typography for creative roles.</p>
+                            <button class="btn btn-primary" onclick="selectTemplate('modern')">Use This Template</button>
+                        </div>
+                    </div>
+                    <div class="template-card">
+                        <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Executive</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Sophisticated layout designed for senior positions and leadership roles.</p>
+                            <button class="btn btn-primary" onclick="selectTemplate('executive')">Use This Template</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">
+                    <span>⚙️</span>
+                    How It Works
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto;">
+                    <div style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 1rem;">1</div>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Fill Form</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Enter your personal information, education, experience, and skills.</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 1rem;">2</div>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Generate</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Click generate and watch as your professional resume is created instantly.</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin: 0 auto 1rem;">3</div>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Save & Share</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Your resume is automatically saved and ready to copy to any document.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section" style="background: var(--background);">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">
+                    <span>🏢</span>
+                    About Us
+                </h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <p style="font-size: 1.125rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem;">
+                        Professional Resume Builder is dedicated to helping job seekers create compelling, professional resumes that stand out in today's competitive job market. Our intelligent platform combines modern design with powerful functionality to deliver exceptional results.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0.5rem;">50K+</div>
+                            <p style="color: var(--text-secondary);">Resumes Created</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0.5rem;">98%</div>
+                            <p style="color: var(--text-secondary);">Success Rate</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0.5rem;">24/7</div>
+                            <p style="color: var(--text-secondary);">Availability</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0.5rem;">100%</div>
+                            <p style="color: var(--text-secondary);">Privacy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="saved-resumes" class="saved-resumes section">
+            <div class="section-title">
+                <span>💾</span>
+                Saved Resumes
+                <button class="btn btn-secondary" style="margin-left: auto;" onclick="loadResumes()">
+                    <span>🔄</span>
+                    Refresh
+                </button>
+            </div>
+            <div id="resumeList" class="resume-grid">
+                <div class="empty-state" style="height: 200px;">
+                    <div class="empty-icon">📂</div>
+                    <p>No saved resumes found</p>
+                    <p class="text-sm text-muted mt-2">Create and save your first resume to see it here</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <div class="footer-logo-icon">�</div>
+                            <h3 class="footer-logo-text">Resume Builder</h3>
+                        </div>
+                        <p class="footer-description">
+                            Create professional resumes with AI-powered assistance. Stand out from the crowd with our intelligent resume builder.
+                        </p>
+                        <div class="footer-social">
+                            <a href="#" class="social-link" aria-label="Facebook">📘</a>
+                            <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+                            <a href="#" class="social-link" aria-label="LinkedIn">�</a>
+                            <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Product</h3>
+                        <div class="footer-links">
+                            <a href="#features" class="footer-link">Features</a>
+                            <a href="#templates" class="footer-link">Templates</a>
+                            <a href="#examples" class="footer-link">Examples</a>
+                            <a href="#pricing" class="footer-link">Pricing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Company</h3>
+                        <div class="footer-links">
+                            <a href="#about" class="footer-link">About Us</a>
+                            <a href="#careers" class="footer-link">Careers</a>
+                            <a href="#blog" class="footer-link">Blog</a>
+                            <a href="#press" class="footer-link">Press</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Support</h3>
+                        <div class="footer-links">
+                            <a href="#help" class="footer-link">Help Center</a>
+                            <a href="#contact" class="footer-link">Contact Us</a>
+                            <a href="#privacy" class="footer-link">Privacy Policy</a>
+                            <a href="#terms" class="footer-link">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p class="footer-copyright">
+                        © 2024 Resume Builder. All rights reserved.
+                    </p>
+                    <div class="footer-legal">
+                        <a href="#privacy" class="footer-legal-link">Privacy Policy</a>
+                        <a href="#terms" class="footer-legal-link">Terms of Service</a>
+                        <a href="#cookies" class="footer-legal-link">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <button class="chatbot-toggle" onclick="toggleChatbot()">
+            <span>💬</span>
+        </button>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3>Resume Assistant</h3>
+                <button onclick="toggleChatbot()" style="background: none; border: none; color: white; cursor: pointer; font-size: 20px;">×</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chat-message bot">
+                    Hello! I'm your resume assistant. I can help you with resume tips, formatting advice, and career guidance. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="handleChatbotKeyPress(event)">
+                <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentResumeId = null;
+
+        // Initialize Background Animations
+        function initBackgroundAnimations() {
+            createParticles();
+            createGeometricShapes();
+            createConnectionLines();
+        }
+
+        // Create Subtle Floating Particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            const particleCount = 15; // Reduced for subtlety
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const size = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
+                particle.className = `particle ${size}`;
+                
+                // Random starting position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 35 + 's';
+                particle.style.animationDuration = (25 + Math.random() * 15) + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Create Professional Geometric Shapes
+        function createGeometricShapes() {
+            const container = document.getElementById('geometricBg');
+            const shapes = ['circle', 'square', 'triangle'];
+            const shapeCount = 6; // Reduced for professional look
+            
+            for (let i = 0; i < shapeCount; i++) {
+                const shape = document.createElement('div');
+                const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+                shape.className = `geo-shape geo-${shapeType}`;
+                
+                // Random position
+                shape.style.left = Math.random() * 90 + '%';
+                shape.style.top = Math.random() * 90 + '%';
+                shape.style.animationDelay = Math.random() * 25 + 's';
+                shape.style.animationDuration = (60 + Math.random() * 20) + 's';
+                
+                // Professional subtle colors
+                const colors = [
+                    'rgba(37, 99, 235, 0.05)',  // Subtle blue
+                    'rgba(5, 150, 105, 0.04)',   // Subtle green
+                    'rgba(99, 102, 241, 0.04)',  // Subtle indigo
+                    'rgba(148, 163, 184, 0.03)'  // Subtle gray
+                ];
+                
+                if (shapeType === 'circle') {
+                    shape.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+                    shape.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}, transparent)`;
+                } else if (shapeType === 'square') {
+                    shape.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+                    shape.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}, transparent)`;
+                } else {
+                    shape.style.borderBottomColor = colors[Math.floor(Math.random() * colors.length)];
+                }
+                
+                container.appendChild(shape);
+            }
+        }
+
+        // Create Professional Connection Lines
+        function createConnectionLines() {
+            const container = document.getElementById('connectionLines');
+            const lineCount = 4; // Reduced for subtlety
+            
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.className = 'connection-line';
+                
+                // Random position and size
+                line.style.width = (100 + Math.random() * 150) + 'px';
+                line.style.left = Math.random() * 80 + '%';
+                line.style.top = Math.random() * 80 + '%';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                line.style.animationDelay = Math.random() * 12 + 's';
+                
+                // Professional subtle gradients
+                const gradients = [
+                    'linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent)',
+                    'linear-gradient(90deg, transparent, rgba(5, 150, 105, 0.08), transparent)',
+                    'linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.08), transparent)',
+                    'linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.06), transparent)'
+                ];
+                
+                line.style.background = gradients[Math.floor(Math.random() * gradients.length)];
+                
+                container.appendChild(line);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initBackgroundAnimations();
+            loadResumes();
+            updateTemplateSelection();
+        });
+
+        function updateTemplateSelection() {
+            const selectedTemplate = localStorage.getItem('selectedTemplate') || 'professional';
+            const templateCards = document.querySelectorAll('.template-card');
+            
+            templateCards.forEach((card, index) => {
+                const templateTypes = ['professional', 'modern', 'executive'];
+                const button = card.querySelector('.btn');
+                
+                if (templateTypes[index] === selectedTemplate) {
+                    button.textContent = '✓ Selected';
+                    button.classList.add('btn-success');
+                    button.classList.remove('btn-primary');
+                    card.style.border = '2px solid var(--success-color)';
+                } else {
+                    button.textContent = 'Use This Template';
+                    button.classList.add('btn-primary');
+                    button.classList.remove('btn-success');
+                    card.style.border = '1px solid var(--border-color)';
+                }
+            });
+        }
+
+        // Form submission
+        document.getElementById('resumeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateResume();
+        });
+
+        function generateResume() {
+            const formData = new FormData(document.getElementById('resumeForm'));
+            const data = Object.fromEntries(formData.entries());
+            
+            // Show loading state
+            const preview = document.getElementById('resumePreview');
+            preview.innerHTML = '<div class="text-center"><div class="loading"></div><p class="mt-2">Generating your resume...</p></div>';
+            
+            // Hide download button during generation
+            document.getElementById('downloadSection').style.display = 'none';
+            
+            // Get selected template
+            const selectedTemplate = localStorage.getItem('selectedTemplate') || 'professional';
+            data.template = selectedTemplate;
+            
+            // Send to backend for generation and storage
+            fetch("http://127.0.0.1:5000/generate_resume", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    preview.textContent = result.resume_text;
+                    preview.classList.add('animated');
+                    setTimeout(() => preview.classList.remove('animated'), 2000);
+                    
+                    // Show download button
+                    document.getElementById('downloadSection').style.display = 'block';
+                    
+                    // Update current resume ID
+                    currentResumeId = result.resume_id;
+                    
+                    showStatus('Resume generated successfully!', 'success');
+                    loadResumes(); // Refresh the saved resumes list
+                } else {
+                    throw new Error(result.error || 'Failed to generate resume');
+                }
+            })
+            .catch(error => {
+                console.error('Error generating resume:', error);
+                showStatus('Error generating resume. Please try again.', 'error');
+                preview.innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><p>Error generating resume</p></div>';
+                document.getElementById('downloadSection').style.display = 'none';
+            });
+        }
+
+        function generateResumeText(data) {
+            const name = data.name || 'Your Name';
+            const email = data.email || 'your.email@example.com';
+            const phone = data.phone || 'Your Phone Number';
+            const education = data.education || 'Your Education';
+            const experience = data.experience || 'Your Work Experience';
+            const skills = data.skills || 'Your Skills';
+            const objective = data.objective || 'Your Career Objective';
+            
+            const currentDate = new Date().toLocaleDateString();
+            
+            // Check which template is selected
+            const selectedTemplate = localStorage.getItem('selectedTemplate') || 'professional';
+            
+            switch(selectedTemplate) {
+                case 'modern':
+                    return generateModernTemplate(name, email, phone, education, experience, skills, objective, currentDate);
+                case 'executive':
+                    return generateExecutiveTemplate(name, email, phone, education, experience, skills, objective, currentDate);
+                default:
+                    return generateProfessionalTemplate(name, email, phone, education, experience, skills, objective, currentDate);
+            }
+        }
+
+        function generateProfessionalTemplate(name, email, phone, education, experience, skills, objective, currentDate) {
+            return `${name}
+${'='.repeat(name.length)}
+
+📧 Email: ${email}
+📱 Phone: ${phone}
+📅 Generated: ${currentDate}
+
+🎯 CAREER OBJECTIVE
+${objective}
+
+🎓 EDUCATION
+${education}
+
+💼 WORK EXPERIENCE
+${experience}
+
+🛠️ SKILLS
+${skills}
+
+---
+Generated by Professional Resume Builder
+${currentDate}`;
+        }
+
+        function generateModernTemplate(name, email, phone, education, experience, skills, objective, currentDate) {
+            return `┌─────────────────────────────────────────┐
+│              ${name.toUpperCase()}               │
+└─────────────────────────────────────────┘
+
+📊 ${email} • ${phone} • ${currentDate}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 PROFESSIONAL SUMMARY
+${objective}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 CORE COMPETENCIES
+${skills}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 PROFESSIONAL EXPERIENCE
+${experience}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 ACADEMIC BACKGROUND
+${education}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ KEY ACHIEVEMENTS
+• Proven track record of delivering results
+• Strong analytical and problem-solving skills
+• Excellent communication and teamwork abilities
+• Adaptability to fast-paced environments
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔗 REFERENCES
+Available upon request
+
+Modern Resume Template • ${currentDate}`;
+        }
+
+        function generateExecutiveTemplate(name, email, phone, education, experience, skills, objective, currentDate) {
+            return `╔════════════════════════════════════════╗
+║         EXECUTIVE LEADERSHIP PROFILE        ║
+╚════════════════════════════════════════╝
+
+${name.toUpperCase()}
+Executive Professional
+${email} • ${phone} • ${currentDate}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌟 EXECUTIVE SUMMARY
+${objective}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💼 LEADERSHIP EXPERIENCE
+${experience}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎓 EDUCATION & CERTIFICATIONS
+${education}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ STRATEGIC COMPETENCIES
+${skills}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏆 KEY LEADERSHIP ACHIEVEMENTS
+• Strategic planning and execution excellence
+• Team building and organizational development
+• Financial management and budget optimization
+• Stakeholder relationship management
+• Change management and process improvement
+• Cross-functional collaboration and partnership
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 PROFESSIONAL AFFILIATIONS
+• Executive Leadership Network
+• Industry Association Member
+• Continuous Learning Advocate
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔗 CONFIDENTIAL REFERENCES
+Professional references available upon request
+
+Executive Resume Template • ${currentDate}`;
+        }
+
+        function loadResumes() {
+            fetch("http://127.0.0.1:5000/resumes")
+                .then(response => response.json())
+                .then(data => {
+                    const resumeList = document.getElementById('resumeList');
+                    
+                    if (!data.resumes || data.resumes.length === 0) {
+                        resumeList.innerHTML = `
+                            <div class="empty-state" style="height: 200px;">
+                                <div class="empty-icon">📂</div>
+                                <p>No saved resumes found</p>
+                                <p class="text-sm text-muted">Create your first resume to get started</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    resumeList.innerHTML = data.resumes.map(resume => `
+                        <div class="resume-card" onclick="loadResume('${resume.id}')">
+                            <h3>${resume.name || 'Untitled Resume'}</h3>
+                            <div class="resume-meta">
+                                <p>📧 ${resume.email || 'No email'}</p>
+                                <p>📱 ${resume.phone || 'No phone'}</p>
+                                <p>📅 ${new Date(resume.created_at).toLocaleDateString()}</p>
+                                <p>📋 ${resume.template || 'professional'} template</p>
+                            </div>
+                            <div class="resume-actions">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); loadResume('${resume.id}')">
+                                    <span>📝</span> Load
+                                </button>
+                                <button class="btn btn-danger" onclick="event.stopPropagation(); deleteResume('${resume.id}')">
+                                    <span>🗑️</span> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error loading resumes:', error);
+                    const resumeList = document.getElementById('resumeList');
+                    resumeList.innerHTML = `
+                        <div class="empty-state" style="height: 200px;">
+                            <div class="empty-icon">❌</div>
+                            <p>Error loading resumes</p>
+                            <p class="text-sm text-muted">Please check your connection</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function loadResume(resumeId) {
+            fetch(`http://127.0.0.1:5000/resumes/${resumeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resume = data.resume;
+                    
+                    if (!resume) {
+                        showStatus('Resume not found', 'error');
+                        return;
+                    }
+                    
+                    // Fill form with resume data
+                    document.getElementById('name').value = resume.name || '';
+                    document.getElementById('email').value = resume.email || '';
+                    document.getElementById('phone').value = resume.phone || '';
+                    document.getElementById('education').value = resume.education || '';
+                    document.getElementById('experience').value = resume.experience || '';
+                    document.getElementById('skills').value = resume.skills || '';
+                    document.getElementById('objective').value = resume.objective || '';
+                    
+                    // Set template if available
+                    if (resume.template) {
+                        localStorage.setItem('selectedTemplate', resume.template);
+                        updateTemplateSelection();
+                    }
+                    
+                    const preview = document.getElementById('resumePreview');
+                    preview.textContent = resume.resume_text;
+                    preview.classList.add('animated');
+                    setTimeout(() => preview.classList.remove('animated'), 2000);
+                    
+                    // Show download button
+                    document.getElementById('downloadSection').style.display = 'block';
+                    
+                    currentResumeId = resume.id;
+                    
+                    // Update button text
+                    document.querySelector('#resumeForm button[type="submit"]').innerHTML = '<span>🔄</span> Update Resume';
+                    
+                    // Scroll to form
+                    document.getElementById('resume-builder').scrollIntoView({ behavior: 'smooth' });
+                    
+                    showStatus('Resume loaded successfully', 'success');
+                })
+                .catch(error => {
+                    console.error('Error loading resume:', error);
+                    showStatus('Error loading resume', 'error');
+                });
+        }
+
+        function deleteResume(resumeId) {
+            if (confirm('Are you sure you want to delete this resume? This action cannot be undone.')) {
+                fetch(`http://127.0.0.1:5000/resumes/${resumeId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showStatus('Resume deleted successfully', 'success');
+                        loadResumes(); // Refresh the list
+                        
+                        // Clear form if this was the current resume
+                        if (currentResumeId === resumeId) {
+                            document.getElementById('resumeForm').reset();
+                            document.getElementById('resumePreview').innerHTML = `
+                                <div class="empty-state">
+                                    <div class="empty-icon">📄</div>
+                                    <p>Your generated resume will appear here</p>
+                                    <p class="text-sm text-muted mt-2">Fill out the form and click "Generate Resume" to get started</p>
+                                </div>
+                            `;
+                            document.getElementById('downloadSection').style.display = 'none';
+                            document.querySelector('#resumeForm button[type="submit"]').innerHTML = '<span>✨</span> Generate Resume';
+                            currentResumeId = null;
+                        }
+                    } else {
+                        throw new Error(data.error || 'Failed to delete resume');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting resume:', error);
+                    showStatus('Error deleting resume', 'error');
+                });
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('resumeForm').reset();
+            document.getElementById('resumePreview').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📄</div>
+                    <p>Your generated resume will appear here</p>
+                    <p class="text-sm text-muted mt-2">Fill out the form and click "Generate Resume" to get started</p>
+                </div>
+            `;
+            currentResumeId = null;
+            document.querySelector('#resumeForm button[type="submit"]').innerHTML = '<span>🚀</span> Generate Resume';
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.innerHTML = `
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+                <span>${message}</span>
+            `;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(statusDiv, container.firstChild);
+            
+            setTimeout(() => {
+                statusDiv.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => statusDiv.remove(), 300);
+            }, 5000);
+        }
+
+        // Chatbot functions
+        function toggleChatbot() {
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("chatbotInput");
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addChatMessage(message, "user");
+            input.value = "";
+            
+            // Show typing indicator
+            addTypingIndicator();
+            
+            // Send message to backend chatbot
+            fetch("http://127.0.0.1:5000/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                removeTypingIndicator();
+                if (data.response) {
+                    addChatMessage(data.response, "bot");
+                } else {
+                    addChatMessage("Sorry, I encountered an error. Please try again.", "bot");
+                }
+            })
+            .catch(error => {
+                removeTypingIndicator();
+                addChatMessage("Sorry, I'm having trouble connecting to the server. Please try again later.", "bot");
+            });
+        }
+
+        function generateBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Resume-related responses
+            if (lowerMessage.includes('resume')) {
+                if (lowerMessage.includes('create') || lowerMessage.includes('make') || lowerMessage.includes('build')) {
+                    return "To create a resume, fill out the form with your personal information, education, experience, and skills. Then click 'Generate Resume' to create your professional resume!";
+                } else if (lowerMessage.includes('template')) {
+                    return "Our resume builder creates clean, professional resumes that are optimized for applicant tracking systems. The format includes sections for contact info, objective, education, experience, and skills.";
+                } else if (lowerMessage.includes('download') || lowerMessage.includes('save')) {
+                    return "Your resumes are automatically saved to your browser's local storage. You can copy the generated resume text and paste it into any document editor like Word or Google Docs.";
+                }
+            }
+            
+            // Career advice responses
+            if (lowerMessage.includes('skills') || lowerMessage.includes('skill')) {
+                return "Important skills to include on your resume are both technical skills (software, programming languages, tools) and soft skills (communication, leadership, problem-solving). Tailor your skills to match the job description!";
+            }
+            
+            if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
+                return "When describing your work experience, use action verbs and quantify your achievements. Instead of 'Responsible for sales', say 'Increased sales by 25% in 6 months through targeted outreach campaigns'.";
+            }
+            
+            if (lowerMessage.includes('education')) {
+                return "List your education in reverse chronological order. Include your degree, major, university, and graduation date. Add relevant coursework, GPA (if above 3.0), and academic achievements.";
+            }
+            
+            // General help responses
+            if (lowerMessage.includes('help') || lowerMessage.includes('how')) {
+                return "I'm here to help you create the perfect resume! I can assist with resume writing tips, career advice, skill recommendations, and formatting guidance. What specific aspect would you like help with?";
+            }
+            
+            if (lowerMessage.includes('thank')) {
+                return "You're welcome! I'm always here to help with your resume and career questions. Feel free to ask anything else you need assistance with.";
+            }
+            
+            // Default responses
+            const defaultResponses = [
+                "That's a great question! For personalized advice, consider your specific industry and career goals when crafting your resume.",
+                "I'd be happy to help you with that! Remember to keep your resume concise, relevant, and tailored to each job application.",
+                "Good point! Professional resumes should be 1-2 pages maximum, use consistent formatting, and highlight your most relevant achievements.",
+                "Thanks for asking! The best resumes tell a compelling story of your professional journey and demonstrate clear value to potential employers."
+            ];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function addChatMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-message bot';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function handleChatbotKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function selectTemplate(templateType) {
+            localStorage.setItem('selectedTemplate', templateType);
+            updateTemplateSelection();
+            scrollToForm();
+        }
+
+        function downloadResumePDF() {
+            const resumeContent = document.getElementById('resumePreview').textContent;
+            const name = document.getElementById('name').value || 'Resume';
+            
+            // Show loading state
+            const downloadBtn = document.querySelector('#downloadSection button');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<span>⏳</span> Generating PDF...';
+            downloadBtn.disabled = true;
+            
+            // Create PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'pt',
+                format: 'a4'
+            });
+            
+            // Page dimensions
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 60;
+            const contentWidth = pageWidth - (margin * 2);
+            const lineHeight = 16;
+            let currentY = margin;
+            
+            // Get selected template
+            const selectedTemplate = localStorage.getItem('selectedTemplate') || 'professional';
+            
+            // Parse resume content
+            const lines = resumeContent.split('\n').filter(line => line.trim());
+            
+            // Add content with proper formatting
+            lines.forEach((line, index) => {
+                // Check if we need a new page
+                if (currentY > pageHeight - margin - 40) {
+                    doc.addPage();
+                    currentY = margin;
+                }
+                
+                // Skip decorative lines for PDF
+                if (line.includes('═') || line.includes('━━') || line.includes('┌') || line.includes('└') || line.includes('│') || line.includes('╔') || line.includes('╚') || line.includes('║') || line.includes('═')) {
+                    return;
+                }
+                
+                // Name/Header
+                if (index === 0 && !line.includes('📧') && !line.includes('📱') && !line.includes('📅')) {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(24);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(line, pageWidth / 2, currentY, { align: 'center' });
+                    currentY += lineHeight * 1.5;
+                }
+                // Contact information
+                else if (line.includes('📧') || line.includes('📱') || line.includes('📅') || line.includes('Generated')) {
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(10);
+                    doc.setTextColor(100, 100, 100);
+                    
+                    // Clean contact info
+                    let cleanLine = line.replace(/[📧📱📅]/g, '').replace(/Generated:/g, 'Date:');
+                    doc.text(cleanLine, pageWidth / 2, currentY, { align: 'center' });
+                    currentY += lineHeight * 0.8;
+                }
+                // Section headers
+                else if (line.includes('OBJECTIVE') || line.includes('SUMMARY') || line.includes('EXPERIENCE') || line.includes('EDUCATION') || line.includes('SKILLS') || line.includes('COMPETENCIES') || line.includes('BACKGROUND') || line.includes('ACHIEVEMENTS') || line.includes('AFFILIATIONS') || line.includes('REFERENCES')) {
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(14);
+                    doc.setTextColor(37, 99, 235);
+                    
+                    // Clean section header
+                    let cleanHeader = line.replace(/[🎯💡🚀📚⚡🏆📊🔗🌟💼🎓🛠️]/g, '').trim();
+                    doc.text(cleanHeader.toUpperCase(), margin, currentY);
+                    currentY += lineHeight * 1.2;
+                    
+                    // Add underline for section header
+                    doc.setDrawColor(37, 99, 235);
+                    doc.setLineWidth(1);
+                    doc.line(margin, currentY - 5, margin + 100, currentY - 5);
+                    currentY += lineHeight * 0.5;
+                }
+                // Bullet points
+                else if (line.includes('•')) {
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(11);
+                    doc.setTextColor(50, 50, 50);
+                    
+                    // Handle bullet points with proper indentation
+                    const bulletText = line.replace('•', '').trim();
+                    const bulletX = margin + 15;
+                    doc.text('•', margin + 5, currentY);
+                    
+                    // Split long bullet points
+                    if (doc.getTextWidth(bulletText) > contentWidth - 20) {
+                        const words = bulletText.split(' ');
+                        let currentLine = '';
+                        let bulletY = currentY;
+                        
+                        words.forEach(word => {
+                            const testLine = currentLine + word + ' ';
+                            if (doc.getTextWidth(testLine) > contentWidth - 20) {
+                                doc.text(currentLine.trim(), bulletX, bulletY);
+                                currentLine = word + ' ';
+                                bulletY += lineHeight;
+                            } else {
+                                currentLine = testLine;
+                            }
+                        });
+                        doc.text(currentLine.trim(), bulletX, bulletY);
+                        currentY = bulletY + lineHeight;
+                    } else {
+                        doc.text(bulletText, bulletX, currentY);
+                        currentY += lineHeight;
+                    }
+                }
+                // Regular content
+                else {
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(11);
+                    doc.setTextColor(50, 50, 50);
+                    
+                    // Clean the line
+                    let cleanLine = line.replace(/[✓]/g, '').trim();
+                    
+                    // Handle long lines with proper wrapping
+                    if (doc.getTextWidth(cleanLine) > contentWidth) {
+                        const words = cleanLine.split(' ');
+                        let currentLine = '';
+                        
+                        words.forEach(word => {
+                            const testLine = currentLine + word + ' ';
+                            if (doc.getTextWidth(testLine) > contentWidth) {
+                                if (currentLine.trim()) {
+                                    doc.text(currentLine.trim(), margin, currentY);
+                                    currentY += lineHeight;
+                                }
+                                currentLine = word + ' ';
+                            } else {
+                                currentLine = testLine;
+                            }
+                        });
+                        if (currentLine.trim()) {
+                            doc.text(currentLine.trim(), margin, currentY);
+                            currentY += lineHeight;
+                        }
+                    } else {
+                        doc.text(cleanLine, margin, currentY);
+                        currentY += lineHeight;
+                    }
+                }
+                
+                // Add spacing between sections
+                if (index < lines.length - 1) {
+                    const nextLine = lines[index + 1];
+                    if ((line.includes('OBJECTIVE') || line.includes('SUMMARY') || line.includes('EXPERIENCE') || line.includes('EDUCATION') || line.includes('SKILLS')) && 
+                        !nextLine.includes('OBJECTIVE') && !nextLine.includes('SUMMARY') && !nextLine.includes('EXPERIENCE') && !nextLine.includes('EDUCATION') && !nextLine.includes('SKILLS')) {
+                        currentY += lineHeight * 0.5;
+                    }
+                }
+            });
+            
+            // Add professional header to all pages
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                
+                // Add header line
+                doc.setDrawColor(200, 200, 200);
+                doc.setLineWidth(0.5);
+                doc.line(margin, 30, pageWidth - margin, 30);
+                
+                // Add footer
+                doc.setDrawColor(200, 200, 200);
+                doc.line(margin, pageHeight - 30, pageWidth - margin, pageHeight - 30);
+                
+                doc.setFont('helvetica', 'italic');
+                doc.setFontSize(8);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Professional Resume Builder - Page ${i} of ${pageCount}`, pageWidth / 2, pageHeight - 20, { align: 'center' });
+            }
+            
+            // Save the PDF with professional naming
+            const cleanName = name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+            const fileName = `${cleanName.replace(/\s+/g, '_')}_Professional_Resume_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+            
+            // Restore button
+            setTimeout(() => {
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+                showStatus('Professional resume downloaded successfully!', 'success');
+            }, 1000);
+        }
+
+        function scrollToForm() {
+            document.getElementById('resume-builder').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add fade out animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

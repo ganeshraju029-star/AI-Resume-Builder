@@ -1,0 +1,112 @@
+{
+  "resume_tips": {
+    "format": [
+      "Use a clean, professional font like Arial, Calibri, or Times New Roman in 10-12pt size.",
+      "Keep consistent formatting throughout your resume with proper alignment and spacing.",
+      "Save your resume as a PDF unless the employer specifically requests another format.",
+      "Use white space effectively - don't cram too much information onto one page."
+    ],
+    "content": [
+      "Start with a strong summary or objective statement that highlights your key qualifications.",
+      "Use bullet points instead of paragraphs to make your achievements easy to scan.",
+      "Include keywords from the job description to pass applicant tracking systems (ATS).",
+      "Proofread multiple times or use tools like Grammarly to catch errors."
+    ]
+  },
+  "interview_preparation": {
+    "before": [
+      "Research the company's mission, values, recent news, and key executives.",
+      "Prepare 5-10 thoughtful questions to ask the interviewer about the role and company.",
+      "Practice common interview questions with a friend or in front of a mirror.",
+      "Plan your outfit the night before and test your technology for virtual interviews."
+    ],
+    "during": [
+      "Arrive 10-15 minutes early for in-person interviews or log in 5 minutes early for virtual ones.",
+      "Maintain good eye contact and positive body language throughout the interview.",
+      "Use the STAR method (Situation, Task, Action, Result) for behavioral questions.",
+      "Be honest about your experience and focus on transferable skills."
+    ],
+    "after": [
+      "Send a personalized thank-you email within 24 hours of the interview.",
+      "Reference specific points from your conversation to show you were listening.",
+      "Connect with the interviewer on LinkedIn with a personalized message.",
+      "Follow up if you don't hear back within the timeline they provided."
+    ]
+  },
+  "skill_development": {
+    "technical": [
+      "Identify in-demand skills in your industry through job postings and industry reports.",
+      "Use online platforms like Coursera, Udemy, or edX for structured learning.",
+      "Build projects to apply and demonstrate your new technical skills.",
+      "Contribute to open-source projects to gain real-world experience."
+    ],
+    "soft": [
+      "Practice active listening in conversations to improve communication skills.",
+      "Join Toastmasters or similar groups to enhance public speaking abilities.",
+      "Take on leadership roles in volunteer organizations or community projects.",
+      "Develop emotional intelligence through mindfulness and self-reflection practices."
+    ]
+  },
+  "career_advice": {
+    "entry_level": [
+      "Apply for internships or entry-level positions to gain initial experience.",
+      "Network with alumni and professionals in your desired field.",
+      "Consider graduate assistantships or fellowships for advanced positions.",
+      "Be open to starting in related roles to get your foot in the door."
+    ],
+    "mid_career": [
+      "Seek mentorship from senior professionals in your industry.",
+      "Consider professional certifications to advance your expertise.",
+      "Develop leadership and management skills for career progression.",
+      "Build a personal brand through speaking engagements or writing."
+    ],
+    "career_change": [
+      "Research transferable skills that apply to your new desired field.",
+      "Consider informational interviews to learn about different industries.",
+      "Start with side projects or freelance work to test your new career interest.",
+      "Be prepared for a potential temporary salary decrease when changing fields."
+    ]
+  },
+  "job_search": {
+    "strategy": [
+      "Set daily or weekly goals for applications, networking, and skill development.",
+      "Use multiple job search platforms: LinkedIn, Indeed, company career pages, and industry-specific sites.",
+      "Create a tracking system to manage your applications and follow-ups.",
+      "Focus on quality over quantity - tailor each application rather than mass applying."
+    ],
+    "networking": [
+      "Attend industry conferences, meetups, and virtual events to expand your network.",
+      "Request informational interviews to learn about companies and roles.",
+      "Join professional associations and online communities in your field.",
+      "Maintain relationships with your network even when you're not actively job searching."
+    ]
+  },
+  "portfolio_development": {
+    "content": [
+      "Showcase 5-10 of your best projects rather than everything you've done.",
+      "Include case studies that explain your process, challenges, and solutions.",
+      "Add testimonials from clients, colleagues, or supervisors to build credibility.",
+      "Regularly update your portfolio with new projects and improved work."
+    ],
+    "presentation": [
+      "Ensure your portfolio is mobile-friendly and loads quickly.",
+      "Use high-quality images and videos to showcase your work effectively.",
+      "Include clear descriptions of your role and contributions to each project.",
+      "Add contact information and links to your professional social media profiles."
+    ]
+  },
+  "professional_branding": {
+    "linkedin": [
+      "Use a professional headshot and customize your LinkedIn URL.",
+      "Write a compelling headline that summarizes your expertise and value proposition.",
+      "Request recommendations from colleagues, supervisors, and clients.",
+      "Share relevant content and engage with others' posts to increase visibility."
+    ],
+    "personal_website": [
+      "Create a clean, professional website that showcases your work and expertise.",
+      "Include an about page that tells your professional story.",
+      "Add a blog to share your insights and establish thought leadership.",
+      "Ensure your website is optimized for search engines with relevant keywords."
+    ]
+  }
+}
